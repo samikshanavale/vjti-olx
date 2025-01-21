@@ -1,26 +1,63 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './App.css'
-import Navbar from './components/Navbar'
-import Manager from './components/Manager'
-import Footer from './components/Footer'
-import CategoryBar from './components/CategoryBar'
+import Home from './pages/Home';
+import Signup from './pages/Signup';
+import Login from './pages/Login';
+import Profile from './pages/Profile';
+import Marketplace from './pages/Marketplace';
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        <>
+          <Home />
+          
+        </>
+      ),
+    },
+    {
+      path: "/signup",
+      element: (
+        <>
+          <Signup />
+        </>
+      ),
+    },
+    {
+      path: "/login",
+      element: (
+        <>
+          <Login />
+        </>
+      ),
+    },
+    {
+      path: "/profile",
+      element: (
+        <>
+          <Profile />
+        </>
+      ),
+    },
+    {
+      path: "/profile",
+      element: (
+        <>
+          <Marketplace />
+        </>
+      ),
+    },
+  
+  ]);
   return (
     <>
-      <Navbar/>
-      <CategoryBar/>
-      <div className="min-h-[85.5vh]">
-      <Manager/>
-      </div>
-      <Footer/>
-      
+      <RouterProvider router={router} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
