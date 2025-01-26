@@ -1,6 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Navbar = () => {
+
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
   return (
     <nav className="bg-white text-white">
       <div className="mycontainer flex justify-between items-center h-10 px-1 py-12">
@@ -28,13 +32,16 @@ const Navbar = () => {
             />
           </div>
 
-          {/* Accounts Button with Logo */}
-          <button className="bg-yellow-400 text-black font-semibold px-4 py-2 rounded hover:bg-yellow-500 flex items-center gap-2">
+          {/* Account Button */}
+          <button
+            className="bg-yellow-400 text-black font-semibold px-4 py-2 rounded hover:bg-yellow-500 flex items-center gap-2"
+            onClick={() => navigate('/profile')} // Navigate to the profile page
+          >
             <lord-icon
               src="https://cdn.lordicon.com/kdduutaw.json"
               trigger="hover"
               colors="primary:#000000,secondary:#000000"
-              style={{ width: "20px", height: "20px" }}
+              style={{ width: '20px', height: '20px' }}
             ></lord-icon>
             Account
           </button>
