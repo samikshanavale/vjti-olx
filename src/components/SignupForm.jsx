@@ -1,13 +1,57 @@
 import React from "react";
+import {useState} from "react"
+import axios from "axios"
 import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
-  const navigate = useNavigate();
+  const [username, setUserName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  // const [confirmpassword, setConfirmPassword] = useState("")
+  const [name, setName] = useState("")
+  const [phone, setPhone] = useState("")
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
 
-  const handleSignup = (e) => {
+  const navigate = useNavigate();
+  
+
+  const handleSignup = async (e) => {
     e.preventDefault();
-    // Add sign-up logic here if needed
-    navigate("/marketplace"); // Redirect to MarketPlace after successful sign-up
+    setError("")
+    setSuccess("")
+
+    //add validation steps
+
+    try{
+      const response = await axios.post("http://localhost:5000/api/signup",{
+        username,
+        password,
+        email,
+        name,
+        phone
+      })
+
+      console.log(response.status)
+      if(response.status == 201) {
+        console.log("hi")
+        navigate("/login");
+        // setSuccess("Signup is successful")
+        // setUsername("")
+        // setPassword("")
+        // setEmail("")
+        // setPhone("")
+        // setConfirmPassword("")
+      }
+    }catch(e){
+      if(error.response)
+      {
+        setError(error.response.data.message || "Error")
+      }
+      else{
+        setError("Server Error")
+      }
+    }
   };
 
   return (
@@ -23,6 +67,8 @@ const SignupForm = () => {
           <input
             type="text"
             placeholder="Full Name"
+            value = {name}
+            onChange = {(e)=>{setName(e.target.value)}}
             style={styles.input}
             required
           />
@@ -34,6 +80,9 @@ const SignupForm = () => {
           <input
             type="text"
             placeholder="Username"
+            
+            value = {username}
+            onChange = {(e)=>{setUserName(e.target.value)}}
             style={styles.input}
             required
           />
@@ -45,6 +94,8 @@ const SignupForm = () => {
           <input
             type="email"
             placeholder="Email"
+            value = {email}
+            onChange = {(e)=>{setEmail(e.target.value)}}
             style={styles.input}
             required
           />
@@ -56,6 +107,8 @@ const SignupForm = () => {
           <input
             type="tel"
             placeholder="Phone"
+            value = {phone}
+            onChange = {(e)=>{setPhone(e.target.value)}}
             style={styles.input}
             required
           />
@@ -67,13 +120,15 @@ const SignupForm = () => {
           <input
             type="password"
             placeholder="Password"
+            value = {password}
+            onChange = {(e)=>{setPassword(e.target.value)}}
             style={styles.input}
             required
           />
         </div>
 
         {/* Confirm Password */}
-        <div style={styles.inputGroup}>
+        {/* <div style={styles.inputGroup}>
           <i className="fas fa-lock" style={styles.icon}></i>
           <input
             type="password"
@@ -81,7 +136,7 @@ const SignupForm = () => {
             style={styles.input}
             required
           />
-        </div>
+        </div> */}
 
         {/* Submit Button */}
         <button type="submit" style={styles.button}>

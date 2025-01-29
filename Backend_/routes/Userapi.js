@@ -4,8 +4,12 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 
 router.post('/signup', async (req, res) => {
-  const { name, email, password } = req.body;
-  console.log(name);
+  const { username,
+    password,
+    email,
+    name,
+    phone } = req.body;
+  console.log(req.body);
   
   try {
     // Check if user already exists
@@ -15,13 +19,15 @@ router.post('/signup', async (req, res) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
     const newUser = new User({
-      name,
-      email,
-      password: hashedPassword,
+      username,
+        password,
+        email,
+        name,
+        phone
     });
 
     await newUser.save();

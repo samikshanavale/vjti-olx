@@ -8,7 +8,7 @@ const userRoute = require('./routes/Userapi')
 const productRoute = require('./routes/Product')
 const PORT = 5000;
 // const uri = 'mongodb+srv://samikshanavale43:Samiksha@cluelesscoders.zeaot.mongodb.net/?retryWrites=true&w=majority&appName=cluelesscoders'
-const uri = 'mongodb+srv://samikshanavale43:Samiksha@cluelesscoders.zeaot.mongodb.net/?retryWrites=true&w=majority&appName=CluelessCoders'
+const uri = 'mongodb+srv://samikshanavale43:Samiksha@cluelesscoders.zeaot.mongodb.net/?retryWrites=true&w=majority&appName=CluelessCoders/VJTIOLX'
 
 // routes
 app.use(express.json());
