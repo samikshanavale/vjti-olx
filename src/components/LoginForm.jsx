@@ -1,13 +1,47 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import {useState} from "react"
+import axios from "axios"
 
 const LoginForm = () => {
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+  
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Add authentication logic here if needed
-    navigate("/marketplace"); // Redirect to MarketPlace
+    setError("")
+    setSuccess("")
+
+    try{
+      const response = await axios.post("http://localhost:5000/api/login",{
+        username,
+        password
+      })
+      console.log(response.status)
+
+      if(response.status == 201) {
+        console.log("hi")
+        navigate("/login");
+        // setSuccess("Signup is successful")
+        // setUsername("")
+        // setPassword("")
+        // setEmail("")
+        // setPhone("")
+        // setConfirmPassword("")
+      }
+    }catch(e){
+      if(error.response)
+      {
+        setError(error.response.data.message || "Error")
+      }
+      else{
+        setError("Server Error")
+      }
+    }
   };
 
   return (
@@ -23,6 +57,8 @@ const LoginForm = () => {
           <input
             type="text"
             placeholder="Username"
+            value = {username}
+            onChange = {(e)=>{setUsername(e.target.value)}}
             style={styles.input}
             required
           />
@@ -33,6 +69,8 @@ const LoginForm = () => {
           <input
             type="password"
             placeholder="Password"
+            value = {password}
+            onChange = {(e)=>{setPassword(e.target.value)}}
             style={styles.input}
             required
           />
