@@ -1,46 +1,39 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import {useState} from "react"
-import axios from "axios"
+import { useState } from "react";
+import axios from "axios";
 
 const LoginForm = () => {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState("")
-  
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("")
-    setSuccess("")
+    setError("");
+    setSuccess("");
 
-    try{
-      const response = await axios.post("http://localhost:5000/api/login",{
+    try {
+      const response = await axios.post("http://localhost:5000/api/login", {
         username,
-        password
-      })
-      console.log(response.status)
+        password,
+      });
+      console.log("Response data:", response.data);
 
-      if(response.status == 200) {
-        const user = response.data.user;
-        localStorage.setItem("username", user.username);
-        navigate("/profile");
-        // setSuccess("Signup is successful")
-        // setUsername("")
-        // setPassword("")
-        // setEmail("")
-        // setPhone("")
-        // setConfirmPassword("")
+      if (response.status === 200) {
+        console.log("Login successful");
+        const user = response.data.user; // Ensure the backend returns a `user` object
+        localStorage.setItem("username", user.username); // Store username in localStorage
+        navigate("/profile"); // Redirect to the profile page
       }
-    }catch(e){
-      if(error.response)
-      {
-        setError(error.response.data.message || "Error")
-      }
-      else{
-        setError("Server Error")
+    } catch (e) {
+      if (e.response) {
+        setError(e.response.data.message || "Error");
+      } else {
+        setError("Server Error");
       }
     }
   };
@@ -58,8 +51,8 @@ const LoginForm = () => {
           <input
             type="text"
             placeholder="Username"
-            value = {username}
-            onChange = {(e)=>{setUsername(e.target.value)}}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             style={styles.input}
             required
           />
@@ -70,8 +63,8 @@ const LoginForm = () => {
           <input
             type="password"
             placeholder="Password"
-            value = {password}
-            onChange = {(e)=>{setPassword(e.target.value)}}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             style={styles.input}
             required
           />
@@ -81,8 +74,11 @@ const LoginForm = () => {
           Log In
         </button>
         <p style={styles.register}>
-  Don’t have an account? <a href="/signup" style={styles.registerLink}>REGISTER HERE</a>
-</p>
+          Don’t have an account?{" "}
+          <a href="/signup" style={styles.registerLink}>
+            REGISTER HERE
+          </a>
+        </p>
       </form>
       <footer style={styles.footer}>
         <a href="" style={styles.socialMediaLink}>
@@ -163,8 +159,8 @@ const styles = {
     fontWeight: "bold",
   },
   registerLink: {
-    color: "#4267B2",  // Blue color for the link
-    textDecoration: "none",  // Optional: removes the underline
+    color: "#4267B2", // Blue color for the link
+    textDecoration: "none", // Optional: removes the underline
   },
 };
 
