@@ -56,18 +56,6 @@ const AddProductModal = ({ showModal, setShowModal, newProduct, handleInputChang
             />
           </div>
 
-          <div>
-            <label className="block font-medium mb-2">Status</label>
-            <select
-              name="status"
-              value={newProduct.status}
-              onChange={handleInputChange}
-              className="w-full border px-4 py-2 rounded"
-            >
-              <option value="available">Available</option>
-              <option value="sold">Sold</option>
-            </select>
-          </div>
 
           <div>
             <label className="block font-medium mb-2">Price</label>
