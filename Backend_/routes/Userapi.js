@@ -2,6 +2,7 @@ const express = require("express")
 const User = require("../models/Usermodel")
 const bcrypt = require("bcrypt");
 const router = express.Router();
+const Product = require("../models/ProductModel")
 
 router.post('/signup', async (req, res) => {
   const { username,
@@ -77,6 +78,37 @@ router.get('/getUserData', async (req, res) => {
   }
   catch(error){
     res.status(500).send("Server error");
+  }
+});
+
+router.post('/addproduct', async (req, res) => {
+  console.log("hii")
+  const { 
+    username,
+    pname,
+    description,
+    price,
+    category,
+    status} = req.body;
+  console.log(req.body);
+  
+  try {
+    const newProduct = new Product({
+      username,
+    pname,
+    description,
+    price,
+    category,
+    status
+    });
+
+    //check if username exists in database
+
+    await newProduct.save();
+    res.status(201).json({ message: 'Product saved successfully' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 

@@ -9,7 +9,15 @@ const Profile = () => {
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
   const [isLoading, setIsLoading] = useState(true)
-
+  const [isOpen, setIsOpen] = useState(false)
+  const [pname, setPname]= useState("")
+  const [description, setDescription]= useState("")
+  const [price, setPrice]= useState("")
+  const [category, setCategory]= useState("")
+  const [status, setStatus]= useState("")
+  const [success, setSuccess] = useState("")
+  const [error, setError] = useState("")
+  
   useEffect(() => {
     const userData = async () => {
       try {
@@ -30,6 +38,39 @@ const Profile = () => {
 
     userData()
   }, [username])
+
+  const handleAddProduct = async(e)=>{
+    e.preventDefault();
+    setError("")
+    setSuccess("")
+    //add validation steps
+
+    try{
+      const response = await axios.post("http://localhost:5000/api/addproduct",{
+        username,
+        pname,
+        description,
+        price,
+        category,
+        status
+      })
+
+      console.log(response.status)
+      if(response.status == 201) {
+        console.log("hi")
+        setIsOpen(false)
+        alert("Product Added Sucessfully")
+      }
+    }catch(error){
+      if(error.response)
+      {
+        setError(error.response.data.message || "Error")
+      }
+      else{
+        setError("Server Error")
+      }
+    }
+  }
 
   if (isLoading) {
     return (
@@ -66,17 +107,162 @@ const Profile = () => {
               <p className="font-semibold">{phone || 'Not provided'}</p>
             </div>
           </div>
-          <div class="flex items-center justify-center ">
-            <button onclick=""
-              class="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition">
+          <div className="flex items-center justify-center ">
+            <button onClick={()=>{setIsOpen(true)}}
+              className="bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition">
               Add Product
             </button>
           </div>
-
         </div>
+        {isOpen && (<form style={styles.form} onSubmit={handleAddProduct}>
+        {/* Full Name */}
+        <div style={styles.inputGroup}>
+          <i className="fas fa-user" style={styles.icon}></i>
+          <input
+            type="text"
+            placeholder="Product Name"
+            value = {pname}
+            onChange = {(e)=>{setPname(e.target.value)}}
+            style={styles.input}
+            required
+          />
+        </div>
+
+        {/* Username */}
+        <div style={styles.inputGroup}>
+          <i className="fas fa-user" style={styles.icon}></i>
+          <input
+            type="text"
+            placeholder="Product Description"
+            
+            value = {description}
+            onChange = {(e)=>{setDescription(e.target.value)}}
+            style={styles.input}
+            required
+          />
+        </div>
+
+        {/* Email */}
+        <div style={styles.inputGroup}>
+          <i className="fas fa-envelope" style={styles.icon}></i>
+          <input
+            type="number"
+            placeholder="Product Price"
+            value = {price}
+            onChange = {(e)=>{setPrice(e.target.value)}}
+            style={styles.input}
+            required
+          />
+        </div>
+
+        {/* Phone */}
+        <div style={styles.inputGroup}>
+          <i className="fas fa-phone" style={styles.icon}></i>
+          <input
+            type="text"
+            placeholder="Product Category"
+            value = {category}
+            onChange = {(e)=>{setCategory(e.target.value)}}
+            style={styles.input}
+            required
+          />
+        </div>
+
+        {/* Password */}
+        <div style={styles.inputGroup}>
+          <i className="fas fa-lock" style={styles.icon}></i>
+          <input
+            type="text"
+            placeholder="Product Status"
+            value = {status}
+            onChange = {(e)=>{setStatus(e.target.value)}}
+            style={styles.input}
+            required
+          />
+        </div>
+        {/* Submit Button */}
+        <button type="submit" style={styles.button}>
+          Add Product
+        </button>
+      </form>)}
       </div>
     </div>
   )
 }
+
+const styles = {
+  container: {
+      width: "500px", // Explicitly set the width
+      margin: "50px auto",
+      padding: "20px",
+      borderRadius: "8px",
+      backgroundColor: "#fdfdfd",
+      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+      textAlign: "center",
+      fontFamily: "'Arial', sans-serif",
+    },
+heading: {
+  fontSize: "24px",
+  marginBottom: "10px",
+},
+description: {
+  fontSize: "14px",
+  color: "#777",
+  marginBottom: "20px",
+},
+form: {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+},
+inputGroup: {
+  display: "flex",
+  alignItems: "center",
+  marginBottom: "15px",
+  width: "100%",
+  position: "relative",
+},
+icon: {
+  position: "absolute",
+  left: "10px",
+  fontSize: "18px",
+  color: "#888",
+},
+input: {
+  width: "100%",
+  padding: "10px 35px",
+  border: "1px solid #ccc",
+  borderRadius: "4px",
+  fontSize: "16px",
+},
+button: {
+  backgroundColor: "#f8c11c",
+  color: "#fff",
+  border: "none",
+  borderRadius: "4px",
+  padding: "10px 20px",
+  fontSize: "16px",
+  cursor: "pointer",
+  marginBottom: "15px",
+},
+register: {
+  fontSize: "14px",
+},
+footer: {
+  marginTop: "20px",
+  fontSize: "14px",
+  color: "#888",
+},
+socialMediaLink: {
+  color: "#4267B2", // Facebook blue
+  textDecoration: "none",
+  fontWeight: "bold",
+},
+registerLink: {
+  color: "#4267B2",  // Blue color for the link
+  textDecoration: "none",  // Optional: removes the underline
+},
+};
+
 
 export default Profile
