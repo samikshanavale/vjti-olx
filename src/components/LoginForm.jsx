@@ -23,9 +23,10 @@ const LoginForm = () => {
       })
       console.log(response.status)
 
-      if(response.status == 201) {
-        console.log("hi")
-        navigate("/login");
+      if(response.status == 200) {
+        const user = response.data.user;
+        localStorage.setItem("username", user.username);
+        navigate("/profile");
         // setSuccess("Signup is successful")
         // setUsername("")
         // setPassword("")

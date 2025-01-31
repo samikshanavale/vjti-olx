@@ -64,4 +64,20 @@ res.status(200).json({ message: 'Login successful', user: { username: user.usern
   }
 });
 
+router.get('/getUserData', async (req, res) => {
+  const username = req.query.username
+
+  try{
+    const user = await User.findOne({username:username})
+    if(!user){
+      return res.status(400).send("User not found");
+    }
+    res.json(user);
+    console.log(user);
+  }
+  catch(error){
+    res.status(500).send("Server error");
+  }
+});
+
 module.exports = router

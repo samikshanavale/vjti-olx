@@ -1,57 +1,47 @@
-import React, { useState } from 'react';
-import ProfileHeader from '../components/ProfileHeader';
-import PastSales from '../components/PastSales';
-import ProductsOnSale from '../components/ProductsOnSale';
-import PastOrders from '../components/PastOrders';
-import AddProductModal from '../components/AddProductModel';
+import React from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const Profile = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [newProduct, setNewProduct] = useState({
-    category: '',
-    name: '',
-    description: '',
-    image: '',
-    status: 'available',
-    price: '',
-  });
+  const username=localStorage.getItem("username")
+  
+    const [email, setEmail] = useState("")
+    const [name, setName] = useState("")
+    const [phone, setPhone] = useState("")
+  
+  useEffect(() => {
+   const userData = async () =>{
+    try{
+      const response = await axios.get(
+        "http://localhost:5000/api/getUserData",
+        { params: { username: username }}
+      );
+      setEmail(response.data.email)
+      setName(response.data.name)
+      setPhone(response.data.phone)
 
-  // Handle input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewProduct({ ...newProduct, [name]: value });
-  };
 
-  // Handle form submission
-  const handleAddProduct = () => {
-    console.log('New Product Details:', newProduct);
-    setShowModal(false);
-    setNewProduct({ category: '', name: '', description: '', image: '', status: 'available', price: '' });
-  };
+    }
 
+    catch(error){
+      console.log(error);
+    }
+   }
+
+   userData()
+  
+  }, [username])
+  
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
-      <ProfileHeader />
-      <PastSales />
-      <ProductsOnSale />
-      <PastOrders />
-
-      <button
-        className="bg-yellow-400 text-black font-semibold px-6 py-3 rounded hover:bg-yellow-500"
-        onClick={() => setShowModal(true)}
-      >
-        Add New Product
-      </button>
-
-      <AddProductModal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        newProduct={newProduct}
-        handleInputChange={handleInputChange}
-        handleAddProduct={handleAddProduct}
-      />
+    <div>
+      {username}
+      {email}
+      {phone}
+      {name}
+      
+    
     </div>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile
