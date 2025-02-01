@@ -128,4 +128,45 @@ router.get('/getProductData', async (req, res) => {
   }
 });
 
+router.get('/getProductDataForMarketPlace', async (req, res) => {
+  //const username = req.query.username
+
+  try{
+    const products = await Product.find({})
+    if(!products){
+      return res.status(400).send("User not found");
+    }
+    res.json(products);
+    console.log(products.length);
+  }
+  catch(error){
+    res.status(500).send("Server error");
+  }
+});
+
+
+router.get('/getProductDataByID', async (req,res) => {
+  const id = req.query.id
+  
+
+  try{
+    const product = await Product.findOne({_id:id})
+    if(!product){
+      return res.status(400).send("Product not found");
+    }
+    const username = product.username;
+    const user = await User.findOne({username:username})
+    if(!username){
+      return res.status(400).send("User not found");
+    }
+
+    const productData = [user, product]
+    console.log(productData)
+    res.json(productData);
+  }
+  catch(error){
+    res.status(500).send("Server error")
+  }
+})
+
 module.exports = router

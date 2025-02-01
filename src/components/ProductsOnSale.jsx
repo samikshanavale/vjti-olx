@@ -84,27 +84,29 @@ const ProductsOnSale = () => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-      <h2 className="text-xl font-semibold mb-4">Products on Sale</h2>
+    <div className="bg-white p-9 rounded-lg shadow-md mb-12 text-lg">
+      <h2 className="text-2xl font-semibold mb-4">Products on Sale</h2>
       {products.length > 0 ? (
-        <ul className="space-y-4">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
           {products.map((product) => (
-            <li key={product._id} className="p-4 border border-gray-300 rounded-lg shadow">
-              <h3 className="text-lg font-bold">{product.pname}</h3>
-              <p className="text-gray-600">{product.description}</p>
-              <p className="text-sm text-gray-500">Category: {product.category}</p>
-              <p className="text-lg font-bold text-yellow-500">₹{product.price}</p>
-              <p className={`text-sm font-medium ${product.status === "Available" ? "text-green-500" : "text-red-500"}`}>
+            <li key={product._id} className="p-6 border border-gray-300 rounded-lg shadow">
+              <h3 className="text-xl font-bold">{product.pname}</h3>
+              <p className="text-gray-700 text-base">{product.description}</p>
+              <p className="text-md text-gray-500">Category: {product.category}</p>
+              <p className="text-xl font-bold text-yellow-500">₹{product.price}</p>
+              <p className={`text-md font-medium ${product.status === "Available" ? "text-green-500" : "text-red-500"}`}>
                 {product.status}
               </p>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500">No products available</p>
+        <p className="text-gray-500 text-lg">No products available</p>
       )}
     </div>
   );
+  
+  
 };
 
 export default ProductsOnSale;

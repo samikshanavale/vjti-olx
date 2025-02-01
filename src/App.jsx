@@ -5,6 +5,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Marketplace from './pages/Marketplace';
+import ProductInfo from './pages/ProductInfo'
 
 function App() {
   // Define routes for your app
@@ -28,6 +29,10 @@ function App() {
     {
       path: "/marketplace",
       element: <Marketplace />, // Marketplace page
+    },
+    {
+      path: "/product/:id",
+      element: <ProductInfo />, // ProductInfo page
     },
   ]);
 

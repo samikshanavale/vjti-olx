@@ -188,7 +188,7 @@ const Profile = () => {
         </button>
       </form>)}
       </div>
-      <div>
+      <div className="ml-8">
         <ProductsOnSale/>
       </div>
     </div>
