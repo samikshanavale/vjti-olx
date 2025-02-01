@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { User, Mail, Phone } from 'lucide-react'
+import ProductsOnSale from '../components/ProductsOnSale';
+
 
 const Profile = () => {
   const username = localStorage.getItem("username")
@@ -81,7 +83,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-100 flex items-left justify-left p-4">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-md p-8 space-y-6">
         <div className="flex flex-col items-center">
           <div className="w-24 h-24 bg-yellow-400 text-white rounded-full flex items-center justify-center mb-4">
@@ -185,6 +187,9 @@ const Profile = () => {
           Add Product
         </button>
       </form>)}
+      </div>
+      <div>
+        <ProductsOnSale/>
       </div>
     </div>
   )

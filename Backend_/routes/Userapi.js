@@ -112,4 +112,20 @@ router.post('/addproduct', async (req, res) => {
   }
 });
 
+router.get('/getProductData', async (req, res) => {
+  const username = req.query.username
+
+  try{
+    const products = await Product.find({username:username})
+    if(!products){
+      return res.status(400).send("User not found");
+    }
+    res.json(products);
+    console.log(products.length);
+  }
+  catch(error){
+    res.status(500).send("Server error");
+  }
+});
+
 module.exports = router

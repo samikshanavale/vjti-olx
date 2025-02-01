@@ -5,11 +5,89 @@ import Footer from '../components/Footer'
 import CategoryBar from '../components/CategoryBar'
 
 const Marketplace = () => {
+  const username = localStorage.getItem("username")
+
+
+  const [category, setCategory] = useState("")
+  //const [username, setUsername] = useState("")
+  const [pname, setPname] = useState("")
+  const [description, setDescription] = useState("")
+  const [status, setStatus] = useState("")
+  const [price, setPrice] = useState("")
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+  const [isLoading, setIsLoading] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
+
+  //const navigate = useNavigate();
+
+  useEffect(() => {
+    const ProductData = async () => {
+      try {
+        setIsLoading(true)
+        const response = await axios.get(
+          "http://localhost:5000/api/getProductData",
+          { params: { username: username } }
+        );
+        setCategory(response.data.category)
+        setDescription(response.data.description)
+        setStatus(response.data.status)
+        setPrice(response.data.price)
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false)
+      }
+    }
+
+    ProductData()
+  }, [pname])
+
+  const handleAddProduct = async(e)=>{
+    e.preventDefault();
+    setError("")
+    setSuccess("")
+    //add validation steps
+
+    try{
+      const response = await axios.post("http://localhost:5000/api/addproduct",{
+        username,
+        pname,
+        description,
+        price,
+        category,
+        status
+      })
+
+      console.log(response.status)
+      if(response.status == 201) {
+        console.log("hi")
+        setIsOpen(false)
+      }
+    }catch(error){
+      if(error.response)
+      {
+        setError(error.response.data.message || "Error")
+      }
+      else{
+        setError("Server Error")
+      }
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 bg-yellow-400"></div>
+      </div>
+    )
+  }
   return (
     <>
       <Navbar/>
       <CategoryBar/>
       <div className="min-h-[85.5vh]">
+        
       </div>
       <Footer/>
       
