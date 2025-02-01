@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { Link,useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Navbar = () => {
 
@@ -12,11 +12,13 @@ const Navbar = () => {
         {/* Logo and Search Bar */}
         <div className="flex items-center gap-4">
           {/* Main Logo */}
-          <img src="icons/logo.png" alt="logo" width={130} className="mx-2" />
+          <Link to="/">
+          <img src="icons/logo.png" alt="logo" width={130} className="mx-2" /></Link>
           
           {/* Search Bar with Icon */}
           <div className="flex items-center border border-yellow-300 rounded w-[1200px] h-[40px] bg-white">
             {/* Icon */}
+            
             <lord-icon
               src="https://cdn.lordicon.com/wjyqkiew.json"
               trigger="hover"
