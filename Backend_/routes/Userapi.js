@@ -3,6 +3,38 @@ const User = require("../models/Usermodel")
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const Product = require("../models/ProductModel")
+const multer = require ("multer");
+const path = require ("path");
+const UPLOAD_PATH = path.join("D:", "MERN", "project", "vjti-olx", "Backend_");
+
+//////////////////////////////////////////multer logic starts///////////////////////////////////////////
+// const uploadPath = path.join(
+//   ""
+// )
+// console.log(uploadPath)
+console.log(__dirname);
+console.log(UPLOAD_PATH)
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // directory to save the uploaded files
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // file name format
+  },
+});
+
+const upload = multer({ storage: storage });
+
+router.post("/upload", upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+  res.send({ filePath: `/uploads/${req.file.filename}` });
+});
+router.use("/uploads", express.static(path.join(UPLOAD_PATH))); 
+
+//////////////////////////////////////////multer logic ends///////////////////////////////////////////
 
 router.post('/signup', async (req, res) => {
   const { username,
@@ -81,7 +113,7 @@ router.get('/getUserData', async (req, res) => {
   }
 });
 
-router.post('/addproduct', async (req, res) => {
+router.post('/addproduct',upload.single("image"), async (req, res) => {
   console.log("hii")
   const { 
     username,
@@ -89,17 +121,25 @@ router.post('/addproduct', async (req, res) => {
     description,
     price,
     category,
-    status} = req.body;
+    status,
+  } = req.body;
+  if (!req.file) {
+    return res.status(400).json({ message: "No image uploaded" });
+  }
+
   console.log(req.body);
-  
   try {
+    
+    const imagePath = `\\uploads\\${req.file.filename}`;
+    console.log(imagePath)
     const newProduct = new Product({
       username,
     pname,
     description,
     price,
     category,
-    status
+    status,
+    image: imagePath
     });
 
     //check if username exists in database

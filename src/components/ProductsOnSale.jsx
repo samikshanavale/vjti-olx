@@ -15,6 +15,8 @@ const ProductsOnSale = () => {
   const [price, setPrice] = useState("")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+
+
   const [products, setProducts] = useState([])
   //const [success, setSuccess] = useState("")
   const [isLoading, setIsLoading] = useState(true)
@@ -30,8 +32,9 @@ const ProductsOnSale = () => {
           "http://localhost:5000/api/getProductData",
           { params: { username: username } }
         );
-        //console.log(response.data)
+        // console.log(response.data)
         setProducts(response.data)
+      
         //console.log(data)
         setIsLoading(false)
       } catch (error) {
@@ -42,6 +45,8 @@ const ProductsOnSale = () => {
 
     ProductData()
   }, [])
+
+  console.log(products)
 
   const handleAddProduct = async(e)=>{
     e.preventDefault();
@@ -66,7 +71,7 @@ const ProductsOnSale = () => {
       }
     }catch(error){
       if(error.response)
-      {
+      { 
         setError(error.response.data.message || "Error")
       }
       else{
@@ -89,7 +94,13 @@ const ProductsOnSale = () => {
       {products.length > 0 ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
           {products.map((product) => (
+            
             <li key={product._id} className="p-6 border border-gray-300 rounded-lg shadow">
+               <img 
+                src={`http://localhost:5000${product.image}`} 
+                alt={product.pname} 
+                className="w-full h-48 object-cover rounded-md mb-4"
+                />
               <h3 className="text-xl font-bold">{product.pname}</h3>
               <p className="text-gray-700 text-base">{product.description}</p>
               <p className="text-md text-gray-500">Category: {product.category}</p>
@@ -98,6 +109,7 @@ const ProductsOnSale = () => {
                 {product.status}
               </p>
             </li>
+            
           ))}
         </ul>
       ) : (

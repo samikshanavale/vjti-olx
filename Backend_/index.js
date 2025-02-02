@@ -1,7 +1,9 @@
 const express =require("express");
 const mongoose =require("mongoose");
 const cors= require("cors");
+const path = require ("path");
 
+console.log(__dirname);
 const app = express();
 app.use(express.json());
 const userRoute = require('./routes/Userapi')

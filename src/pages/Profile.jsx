@@ -20,6 +20,7 @@ const Profile = () => {
   const [status, setStatus]= useState("")
   const [success, setSuccess] = useState("")
   const [error, setError] = useState("")
+  const [image, setImage] = useState(null)
   
   useEffect(() => {
     const userData = async () => {
@@ -42,38 +43,38 @@ const Profile = () => {
     userData()
   }, [username])
 
-  const handleAddProduct = async(e)=>{
+  const handleAddProduct = async (e) => {
     e.preventDefault();
-    setError("")
-    setSuccess("")
-    //add validation steps
-
-    try{
-      const response = await axios.post("http://localhost:5000/api/addproduct",{
-        username,
-        pname,
-        description,
-        price,
-        category,
-        status
-      })
-
-      console.log(response.status)
-      if(response.status == 201) {
-        console.log("hi")
-        setIsOpen(false)
-        alert("Product Added Sucessfully")
+    setError("");
+    setSuccess("");
+  
+    try {
+      const formData = new FormData();
+      formData.append("username", username);
+      formData.append("pname", pname);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("category", category);
+      formData.append("status", status);
+      if (image) formData.append("image", image); 
+  
+      const response = await axios.post("http://localhost:5000/api/addproduct", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+  
+      if (response.status === 201) {
+        setIsOpen(false);
+        alert("Product Added Successfully");
       }
-    }catch(error){
-      if(error.response)
-      {
-        setError(error.response.data.message || "Error")
-      }
-      else{
-        setError("Server Error")
+    } catch (error) {
+      if (error.response) {
+        setError(error.response.data.message || "Error");
+      } else {
+        setError("Server Error");
       }
     }
-  }
+  };
+  
 
   if (isLoading) {
     return (
@@ -173,7 +174,7 @@ const Profile = () => {
           />
         </div>
 
-        {/* Password */}
+        {/* Product Status */}
         <div style={styles.inputGroup}>
           <i className="fas fa-lock" style={styles.icon}></i>
           <input
@@ -181,6 +182,18 @@ const Profile = () => {
             placeholder="Product Status"
             value = {status}
             onChange = {(e)=>{setStatus(e.target.value)}}
+            style={styles.input}
+            required
+          />
+        </div>
+        {/* Image */}
+        <div style={styles.inputGroup}>
+          <i className="fas fa-lock" style={styles.icon}></i>
+          <input
+            type="file"
+            placeholder="Add Image"
+            accept="image/*"
+            onChange = {(e)=>{setImage(e.target.files[0])}}
             style={styles.input}
             required
           />
