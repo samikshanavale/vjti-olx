@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { User, Mail, Phone } from 'lucide-react'
 import ProductsOnSale from '../components/ProductsOnSale';
+import CommonNav from '../components/CommonNav';
 
 
 const Profile = () => {
@@ -83,6 +84,8 @@ const Profile = () => {
   }
 
   return (
+    <>
+    <CommonNav/>
     <div className="min-h-screen bg-gray-100 flex items-left justify-left p-4">
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-md p-8 space-y-6">
         <div className="flex flex-col items-center">
@@ -192,6 +195,7 @@ const Profile = () => {
         <ProductsOnSale/>
       </div>
     </div>
+    </>
   )
 }
 
