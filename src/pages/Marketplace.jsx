@@ -98,6 +98,11 @@ const Marketplace = () => {
               {products.map((product) => (
                 <li key={product._id} className="p-6 border border-gray-300 rounded-lg shadow">
                   <Link to={`/product/${product._id}`}>
+                  <img 
+                  src={`http://localhost:5000${product.image}`} 
+                  alt={product.pname} 
+                  className="w-full h-48 object-cover rounded-md mb-4"
+                />
                   <h3 className="text-xl font-bold">{product.pname}</h3>
                   <p className="text-gray-700 text-base">{product.description}</p>
                   <p className="text-md text-gray-500">Category: {product.category}</p>

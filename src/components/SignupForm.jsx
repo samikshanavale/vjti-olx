@@ -97,6 +97,7 @@ const SignupForm = () => {
         <input
           type="email"
           name="email"
+          pattern=".*vjti\.ac\.in$"
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}

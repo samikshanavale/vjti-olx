@@ -4,23 +4,23 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const Product = require("../models/ProductModel")
 const multer = require ("multer");
-const path = require ("path");
-const UPLOAD_PATH = path.join("D:", "MERN", "project", "vjti-olx", "Backend_");
+const path = require ("path")
+const UPLOAD_PATH = path.join(__dirname, "..", "uploads");
 
 //////////////////////////////////////////multer logic starts///////////////////////////////////////////
 // const uploadPath = path.join(
 //   ""
 // )
 // console.log(uploadPath)
-console.log(__dirname);
-console.log(UPLOAD_PATH)
+console.log("DirName",__dirname);
+console.log("UploadPath",UPLOAD_PATH)
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // directory to save the uploaded files
+    cb(null, path.join(__dirname, "..", "uploads")); // Store files in the uploads folder
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // file name format
+    cb(null, Date.now() + path.extname(file.originalname)); // Use timestamp as the filename
   },
 });
 
@@ -32,7 +32,7 @@ router.post("/upload", upload.single("file"), (req, res) => {
   }
   res.send({ filePath: `/uploads/${req.file.filename}` });
 });
-router.use("/uploads", express.static(path.join(UPLOAD_PATH))); 
+router.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
 //////////////////////////////////////////multer logic ends///////////////////////////////////////////
 
@@ -128,10 +128,9 @@ router.post('/addproduct',upload.single("image"), async (req, res) => {
   }
 
   console.log(req.body);
+  const imagePath = `/uploads/${req.file.filename}`;
+
   try {
-    
-    const imagePath = `\\uploads\\${req.file.filename}`;
-    console.log(imagePath)
     const newProduct = new Product({
       username,
     pname,
@@ -160,6 +159,8 @@ router.get('/getProductData', async (req, res) => {
     if(!products){
       return res.status(400).send("User not found");
     }
+    console.log(products);
+
     res.json(products);
     console.log(products.length);
   }

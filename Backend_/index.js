@@ -2,8 +2,8 @@ const express =require("express");
 const mongoose =require("mongoose");
 const cors= require("cors");
 const path = require ("path");
-
-console.log(__dirname);
+const nodemailer = require("nodemailer");
+// console.log(__dirname);
 const app = express();
 app.use(express.json());
 const userRoute = require('./routes/Userapi')
@@ -34,10 +34,56 @@ const connectDB = async () => {
 };
 connectDB();
 
+// Serve static files from the "uploads" folder
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+
 app.use('/api',userRoute)
 app.use('/api/p1',productRoute)
 
+const transporter = nodemailer.createTransport({
+  service: "gmail", // Or any email service you're using
+  auth: {
+    user: "samikshanavale43@gmail.com",  // Replace with your email
+    pass: "wumh tuxo xaan blis"    // Replace with your email password or use OAuth2 for more security
+  }
+});
 
+// Send email function
+const sendEmail = async (to, subject, text, html) => {
+  try {
+    // console.log(text)
+    const info = await transporter.sendMail({
+      from: '"Your Website" <samikshanavale43@gmail.com>', // sender address
+      to, // receiver's email address
+      subject, // subject line
+      text, // plain text body
+      html, // HTML body
+    });
+    // console.log("Email sent: " + info.response);
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
+};
+
+//Email Sent
+
+app.post('/sendEmail', async (req, res) => {
+  const { to, subject, text, html } = req.body;
+
+  if (!to || !subject || !text) {
+      return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  try {
+      await sendEmail(to, subject, text, html);
+      res.status(200).json({ message: "Email sent successfully" });
+  } catch (error) {
+      res.status(500).json({ message: "Failed to send email", error: error.message });
+    }
+});
+
+module.exports = { sendEmail };
 
 
 app.listen(PORT, () => {
