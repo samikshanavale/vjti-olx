@@ -64,7 +64,7 @@ const Marketplace = () => {
       );
     }
 
-    // Apply search filter
+    // Apply search filter in search bar
     if (query.trim() !== "") {
       filtered = filtered.filter(product => 
         product.pname.toLowerCase().includes(query.toLowerCase())

@@ -90,7 +90,7 @@ const ProductsOnSale = () => {
 
   return (
     <div className="bg-white p-9 rounded-lg shadow-md mb-12 text-lg">
-      <h2 className="text-2xl font-semibold mb-4">Products on Sale</h2>
+      <h2 className="text-2xl font-semibold mb-4">Products listed by you</h2>
       {products.length > 0 ? (
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
           {products.map((product) => (

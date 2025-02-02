@@ -16,7 +16,6 @@ const CommonNav = () => {
         <div className="flex gap-6">
           <Link to="/" className="hover:text-yellow-500 font-bold px-4 ">Home</Link>
           <Link to="/marketplace" className="hover:text-yellow-500 font-bold px-4">Marketplace</Link>
-          <Link to="/profile" className="hover:text-yellow-500 font-bold px-4">My Products</Link>
           <Link to="/profile" className="hover:text-yellow-500 font-bold px-4">Wishlist</Link>
         </div>
 
