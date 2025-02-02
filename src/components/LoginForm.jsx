@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import axios from "axios";
 
 const LoginForm = () => {
@@ -8,6 +7,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -15,6 +16,7 @@ const LoginForm = () => {
     e.preventDefault();
     setError("");
     setSuccess("");
+    setLoading(true);
 
     try {
       const response = await axios.post("http://localhost:5000/api/login", {
@@ -27,15 +29,24 @@ const LoginForm = () => {
         console.log("Login successful");
         const user = response.data.user; // Ensure the backend returns a `user` object
         localStorage.setItem("username", user.username); // Store username in localStorage
-        navigate("/profile"); // Redirect to the profile page
+        setSuccess("Login successful! Redirecting...");
+        setTimeout(() => {
+          navigate("/profile"); // Redirect to the profile page
+        }, 2000); // Redirect after 2 seconds
       }
     } catch (e) {
       if (e.response) {
         setError(e.response.data.message || "Error");
       } else {
-        setError("Server Error");
+        setError("Server Error: Unable to connect to the server.");
       }
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -61,18 +72,25 @@ const LoginForm = () => {
         <div style={styles.inputGroup}>
           <i className="fas fa-lock" style={styles.icon}></i>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             style={styles.input}
             required
           />
+          <i
+            className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+            style={styles.passwordToggle}
+            onClick={togglePasswordVisibility}
+          ></i>
         </div>
         {/* Submit Button */}
-        <button type="submit" style={styles.button}>
-          Log In
+        <button type="submit" style={styles.button} disabled={loading}>
+          {loading ? "Logging in..." : "Log In"}
         </button>
+        {error && <p style={styles.error}>{error}</p>}
+        {success && <p style={styles.success}>{success}</p>}
         <p style={styles.register}>
           Don’t have an account?{" "}
           <a href="/signup" style={styles.registerLink}>
@@ -135,6 +153,13 @@ const styles = {
     borderRadius: "4px",
     fontSize: "16px",
   },
+  passwordToggle: {
+    position: "absolute",
+    right: "10px",
+    fontSize: "18px",
+    color: "#888",
+    cursor: "pointer",
+  },
   button: {
     backgroundColor: "#f8c11c",
     color: "#fff",
@@ -144,6 +169,23 @@ const styles = {
     fontSize: "16px",
     cursor: "pointer",
     marginBottom: "15px",
+    width: "100%",
+    opacity: 1,
+    transition: "opacity 0.3s",
+  },
+  buttonDisabled: {
+    opacity: 0.7,
+    cursor: "not-allowed",
+  },
+  error: {
+    color: "red",
+    fontSize: "14px",
+    marginBottom: "10px",
+  },
+  success: {
+    color: "green",
+    fontSize: "14px",
+    marginBottom: "10px",
   },
   register: {
     fontSize: "14px",
