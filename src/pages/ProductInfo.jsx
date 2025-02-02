@@ -97,7 +97,8 @@ const ProductInfo = () => {
                 <img
                     src={`http://localhost:5000${product.image}`}
                     alt={product.pname}
-                    className="w-full h-48 object-cover rounded-md mb-4"
+                    className="w-1/2 h-50 object-cover rounded-md mb-4"
+
                 />
 
                 {/* Right Side: Product and Seller Info */}

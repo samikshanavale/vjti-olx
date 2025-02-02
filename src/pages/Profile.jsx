@@ -148,7 +148,7 @@ const Profile = () => {
           />
         </div>
 
-        {/* Email */}
+        {/* Price */}
         <div style={styles.inputGroup}>
           <i className="fas fa-envelope" style={styles.icon}></i>
           <input
@@ -161,31 +161,41 @@ const Profile = () => {
           />
         </div>
 
-        {/* Phone */}
-        <div style={styles.inputGroup}>
-          <i className="fas fa-phone" style={styles.icon}></i>
-          <input
-            type="text"
-            placeholder="Product Category"
-            value = {category}
-            onChange = {(e)=>{setCategory(e.target.value)}}
-            style={styles.input}
-            required
-          />
-        </div>
+        {/* Product Category Dropdown */}
+<div style={styles.inputGroup}>
+  <i className="fas fa-list" style={styles.icon}></i>
+  <select
+    value={category}
+    onChange={(e) => setCategory(e.target.value)}
+    style={styles.input}
+    required
+  >
+    <option value="" disabled>Select Category</option>
+    <option value="furniture">furniture</option>
+    <option value="electronics">electronics</option>
+    <option value="stationary">stationary</option>
+    <option value="sports">sports</option>
+    <option value="music">music</option>
+    <option value="other">other</option>
+  </select>
+</div>
 
-        {/* Product Status */}
-        <div style={styles.inputGroup}>
-          <i className="fas fa-lock" style={styles.icon}></i>
-          <input
-            type="text"
-            placeholder="Product Status"
-            value = {status}
-            onChange = {(e)=>{setStatus(e.target.value)}}
-            style={styles.input}
-            required
-          />
-        </div>
+
+        {/* Product Status Dropdown */}
+<div style={styles.inputGroup}>
+  <i className="fas fa-lock" style={styles.icon}></i>
+  <select
+    value={status}
+    onChange={(e) => setStatus(e.target.value)}
+    style={styles.input}
+    required
+  >
+    <option value="" disabled>Select Status</option>
+    <option value="available">Available</option>
+    <option value="unavailable">Unavailable</option>
+  </select>
+</div>
+
         {/* Image */}
         <div style={styles.inputGroup}>
           <i className="fas fa-lock" style={styles.icon}></i>
